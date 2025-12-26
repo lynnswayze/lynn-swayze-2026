@@ -63,7 +63,7 @@ if ( url.includes("posts/") ) {
 let headerHTML = '<ul> <li><a href="' + relativePath + '/index.html">Home</a></li>' + 
 '<li><a href="' + relativePath + '/now.html">Now</a></li>' +
 '<li><a href="' + relativePath + '/about.html">About</a></li>' +
-'<li><a href="' + relativePath + '/fiction.html">Books</a></li>' + 
+'<li><a href="' + relativePath + '/books.html">Books</a></li>' + 
 '<li><a href="' + relativePath + '/services.html">Hire Lynn</a></li>' + 
 '<li><a href="' + relativePath + '/archive.html">Archive</a></li>' + 
 '<li><a href="' + relativePath + '/contact.html">Contact</a></li></ul>';
