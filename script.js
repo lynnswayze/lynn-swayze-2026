@@ -14,9 +14,9 @@
 
 //==[ 1. BASIC INFO ]==
 
-let blogName = "My Blog Name";
-let authorName = "My Name Here";
-let authorLink = ""; // Enter your website, social media, etc. Some way for people to tell you they like your blog! (Leaving it empty is okay too)
+let blogName = "LynnSwayze.com";
+let authorName = "Lynn Swayze";
+let authorLink = "https://lynnswayze.com"; // Enter your website, social media, etc. Some way for people to tell you they like your blog! (Leaving it empty is okay too)
 
 //-----------------------------
 
