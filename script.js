@@ -33,7 +33,7 @@ let authorLink = "https://lynnswayze.com"; // Enter your website, social media, 
 let postsArray = [
 //[ "posts/2020-11-10-Special-Characters-Example.html", encodeURI( 'Spéci@l "Character\'s" Examp|e' ) ],
 //[ "posts/2020-11-10-My-Third-Post-Example.html" ],
-[ "posts/2025-12.26-Daily-Habits-for-Mindset-Health.html" ],
+[ "posts/2025-12.08-Daily-Habits-for-Mindset-Health-Inspired-By-New-Thought.html" ],
 [ "posts/2025-11-10-Post-Template-copy.html" ],
 [ "posts/2020-11-10-Post-Template.html" ] ];
 
