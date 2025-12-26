@@ -1,7 +1,7 @@
 /*Welcome to the script file! Your 1st time here, you should update
-  the BASIC INFO section to include your name and website/social 
+  the basic info section to include your name and website/social 
   media link (if desired). Most of the time, you will just come
-  here to update the POSTS ARRAY. However, you can also edit or
+  here to update the posts array. However, you can also edit or
   add your own scripts to do whatever you like!*/
 
 //TABLE OF CONTENTS
@@ -14,9 +14,9 @@
 
 //==[ 1. BASIC INFO ]==
 
-let blogName = "LynnSwayze.com";
-let authorName = "Lynn Swayze";
-let authorLink = "https://lynnswayze.com"; // Enter your website, social media, etc. Some way for people to tell you they like your blog! (Leaving it empty is okay too)
+let blogName = "My Blog Name";
+let authorName = "My Name Here";
+let authorLink = ""; // Enter your website, social media, etc. Some way for people to tell you they like your blog! (Leaving it empty is okay too)
 
 //-----------------------------
 
@@ -30,32 +30,31 @@ let authorLink = "https://lynnswayze.com"; // Enter your website, social media, 
 /*UPDATE: as of version 1.3, you may omit the date if you would like. But if you
   use a date it must still follow that format.*/
 
+/*3LEGGED'S TAGGING SYSTEM:
+To make use of tags in your blog posts, add them to the end of the post array - ensuring that you leave a "", 
+between tags and the post link for special character encoding (see examples below). 
+After this point, tags can be in any order, are case-sensitive, and shouldn't contain spaces or special characters.
+*/
+
 let postsArray = [
-//[ "posts/2020-11-10-Special-Characters-Example.html", encodeURI( 'Spéci@l "Character\'s" Examp|e' ) ],
-//[ "posts/2020-11-10-My-Third-Post-Example.html" ],
-//[ "posts/2020-11-10-My-Second-Post-Example.html" ],
-[ "posts/2020-11-10-Post-Template.html" ] ];
+//[ "posts/2020-11-10-Special-Characters-Example.html", encodeURI( 'Spéci@l "Character\'s" Examp|e' ), "exampleTag1" ],
+//[ "posts/2020-11-10-My-Third-Post-Example.html", "" ],
+//[ "posts/2020-11-10-My-Second-Post-Example.html", "" ],
+//[ "posts/2020-11-10-Post-Template.html", "", "exampleTag1", "exampleTag2" ],
+];
 
-//XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//-----------------------------
 
-/*CAUTION!! BEGINNING OF MORE ADVANCED SECTION!
-  For default functionality, you DO NOT have to touch anything beyond this point.
-  Things get more complicated here, so if you are unfamiliar with Javascript,
-  your site may break. That's okay though, you can always paste back in the code
-  from the Zonelets starter files :) */
-
-//XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
-//==[ 3. GENERATING THE HTML SECTIONS TO BE INSERTED ]==
+//==[ 3. CREATING HTML SECTIONS TO BE INSERTED ]==
 
 let url = window.location.pathname;
 
 //The date format to look for is 4 digits, hyphen, 2 digits, hyphen, 2 digits, hyphen.
 const postDateFormat = /\d{4}\-\d{2}\-\d{2}\-/;
 
-//Check if you are in posts (if so, the links will have to go up a directory)
+//Check if you are in posts or tags (if so, the links will have to go up a directory)
 let relativePath = ".";
-if ( url.includes("posts/") ) {
+if ( url.includes("posts/") || url.includes("tags/") ) {
   relativePath = "..";
 }
 
@@ -68,7 +67,7 @@ let headerHTML = '<ul> <li><a href="' + relativePath + '/index.html">Home</a></l
 
 //Generate the Footer HTML, which uses the variables defined in the BASIC INFO section above to list info about the site.
 //Note: feel free to remove the references to Zonelets and Neocities! Just be careful not to delete any necessary HTML closing tags or other syntax.
-let footerHTML = "<hr><p>" + blogName + " is written by <a href='" + authorLink + "'>" + authorName + "</a>, built with <a href='https://zonelets.net/'>Zonelets</a>." + " Last Updated 12-26-2025.</p>";
+let footerHTML = "<hr><p>" + blogName + " is written by <a href='" + authorLink + "'>" + authorName + "</a>, built with <a href='https://zonelets.net/'>Zonelets</a>," + "with adjustments from <a href='https://3legged.neocities.org/journal/posts/2023-03-12-Creating-A-Zonelets-Tagging-System'>3Legged</a>." + " Last Updated 12-26-2025.</p>";
 
 //To do the following stuff, we want to know where we are in the posts array (if we're currently on a post page).
 let currentIndex = -1;
@@ -88,7 +87,7 @@ for (i = 0; i < postsArray.length; i++) {
 //Or pass along the "special characters" version of the title if one exists
 function formatPostTitle(i) {
   // Check if there is an alternate post title
-  if ( postsArray[i].length > 1 ) {
+  if ( postsArray[i][1] != "" ) {
     //Remember how we had to use encodeURI for special characters up above? Now we use decodeURI to get them back.
     return decodeURI(postsArray[i][1]);
   } else { 
@@ -101,9 +100,10 @@ function formatPostTitle(i) {
   }
 }
 
-//Get the current post title and date (if we are on a post page)
+//Get the current post title, tags and date (if we are on a post page)
 let currentPostTitle = "";
 let niceDate = "";
+let postTagsHTML = "Tagged as: ";
 if ( currentIndex > -1 ) {
   currentPostTitle = formatPostTitle( currentIndex );
   //Generate the "nice to read" version of date
@@ -124,40 +124,48 @@ if ( currentIndex > -1 ) {
     else if ( monthSlice === "12") { month = "Dec";}
 	niceDate = postsArray[currentIndex][0].slice( 14,16 ) + " " + month + ", " + postsArray[currentIndex][0].slice( 6,10 );
   }
+	//create html list of post tags
+	console.log("About to create tag list");
+	for (i=2;i<postsArray[currentIndex].length;i++) {
+	  console.log(postsArray[currentIndex][i]);
+		postTagsHTML += '<a href="/tags/' + postsArray[currentIndex][i] + '">' + postsArray[currentIndex][i] + '</a>, ';
+	}
+	//cut final comma off list
+	postTagsHTML = postTagsHTML.slice(0,-2);
 }
 
 //Generate the Post List HTML, which will be shown on the "Archive" page.
 
-function formatPostLink(i) {
+function formatPostLink(i,arrayToFormat) {
   let postTitle_i = "";
-  if ( postsArray[i].length > 1 ) {
-    postTitle_i = decodeURI(postsArray[i][1]);
+  if ( arrayToFormat[i][1] != "" ) {
+    postTitle_i = decodeURI(arrayToFormat[i][1]);
   } else {
-	if (  postDateFormat.test ( postsArray[i][0].slice( 6,17 ) ) ) {
-	  postTitle_i = postsArray[i][0].slice(17,-5).replace(/-/g," ");
+	if (  postDateFormat.test ( arrayToFormat[i][0].slice( 6,17 ) ) ) {
+	  postTitle_i = arrayToFormat[i][0].slice(17,-5).replace(/-/g," ");
     } else {
-      postTitle_i = postsArray[i][0].slice(6,-5).replace(/-/g," ");
+      postTitle_i = arrayToFormat[i][0].slice(6,-5).replace(/-/g," ");
     }
   }
-  if (  postDateFormat.test ( postsArray[i][0].slice( 6,17 ) ) ) {
-    return '<li><a href="' + relativePath + '/'+ postsArray[i][0] +'">' + postsArray[i][0].slice(6,16) + " \u00BB " + postTitle_i + '</a></li>';
+  if (  postDateFormat.test ( arrayToFormat[i][0].slice( 6,17 ) ) ) {
+    return '<li><a href="' + relativePath + '/'+ arrayToFormat[i][0] +'">' + arrayToFormat[i][0].slice(6,16) + " \u00BB " + postTitle_i + '</a></li>';
   } else {
-    return '<li><a href="' + relativePath + '/'+ postsArray[i][0] +'">' + postTitle_i + '</a></li>';
+    return '<li><a href="../' + relativePath + '/'+ arrayToFormat[i][0] +'">' + postTitle_i + '</a></li>';
   }
 }
 
 let postListHTML = "<ul>";
 for ( let i = 0; i < postsArray.length; i++ ) {
-  postListHTML += formatPostLink(i);
+  postListHTML += formatPostLink(i,postsArray);
 }
 postListHTML += "</ul>";
 
 //Generate the Recent Post List HTML, which can be shown on the home page (or wherever you want!)
-let recentPostsCutoff = 9; //Hey YOU! Change this number to set how many recent posts to show before cutting it off with a "more posts" link.
+let recentPostsCutoff = 3; //Hey YOU! Change this number to set how many recent posts to show before cutting it off with a "more posts" link.
 let recentPostListHTML = "<h2>Recent Posts:</h2><ul>";
 let numberOfRecentPosts = Math.min( recentPostsCutoff, postsArray.length );
 for ( let i = 0; i < numberOfRecentPosts; i++ ) {
-  recentPostListHTML += formatPostLink(i);
+  recentPostListHTML += formatPostLink(i,postsArray);
 }
 /*If you've written more posts than can fit in the Recent Posts List,
   then we'll add a link to the archive so readers can find the rest of
@@ -192,6 +200,54 @@ if ( postsArray.length < 2 ) {
 
 //-----------------------------
 
+//new function to generate a list of posts with a specific tag
+let taggedPostArray = [];
+let tag = "";
+function getTaggedPosts (pageTitle) {
+  tag = pageTitle.toLowerCase();
+	for (i=0; i < postsArray.length; i++) {
+		for (x=2; x < postsArray[i].length; x++) {
+			if (postsArray[i][x] == tag) {
+				taggedPostArray.push(postsArray[i]);
+			}
+		}
+	}
+	let taggedPostListHTML = '<ul class="no-bullets">';
+	for ( let i = 0; i < taggedPostArray.length; i++ ) {
+  		taggedPostListHTML += formatPostLink(i,taggedPostArray);
+	}
+	taggedPostListHTML += '</ul>';
+	return taggedPostListHTML;
+}
+
+//new function to get list of all used tags
+function getTagList () {
+	let tagArray = [];
+	for (i=0; i < postsArray.length; i++) {
+		for (x=2; x < postsArray[i].length; x++) {
+		  	if (tagArray.length == 0) {
+		    	tagArray.push(postsArray[i][x]);
+		  	}
+			else if (tagArray.includes(postsArray[i][x]) == false) {
+				tagArray.push(postsArray[i][x]);
+			}
+		}
+	}
+	return tagArray;
+}
+
+//new function to turn tag array into list of links
+function formatTagList (tagArray) {
+	let tagListHTML = '<h3>Tags:</h3><ul class="no-bullets">';
+	for (i=0;i<tagArray.length;i++) {
+  		tagListHTML += '<li><a href="/tags/' + tagArray[i] + '">' + tagArray[i] + '</a></li>';
+	}
+	tagListHTML += "</ul>";
+	return tagListHTML;
+}
+
+
+
 //==[ 4. INSERTING THE SECTIONS INTO OUR ACTUAL HTML PAGES ]==
 
 /*Here we check if each relevant div exists. If so, we inject the correct HTML!
@@ -223,23 +279,26 @@ if (document.getElementById("postDate")) {
 if (document.getElementById("footer")) {
   document.getElementById("footer").innerHTML = footerHTML;
 }
+//the below three items are additional for the tagging system:
+//generates a list of all posts tagged with the page title - ideal for use on individual tag pages like https://3legged.neocities.org/journal/tags/coding
+//HTML to put on your page: <div id="taggedPosts"></div>
+if (document.getElementById("taggedPosts")) {
+  document.getElementById("taggedPosts").innerHTML = getTaggedPosts(document.title);
+}
+//generates a linked list of all tags used across your blogposts, useful for sidebars or archive pages.
+//YOU WILL NEED TO manually create a page for each tag in order for these links to work!
+//HTML to put on your page: <div id="tagList"></div>
+if (document.getElementById("tagList")) {
+  document.getElementById("tagList").innerHTML = formatTagList(getTagList());
+}
+//generates a list of all tags attached to a particular post - this only works on post pages, but works great at the top or bottom of a post.
+//HTML to put on your page: <div id="postTags"></div>
+if (document.getElementById("postTags")) {
+  document.getElementById("postTags").innerHTML = postTagsHTML;
+}
 
 //Dynamically set the HTML <title> tag from the postTitle variable we created earlier
 //The <title> tag content is what shows up on browser tabs
 if (document.title === "Blog Post") {
   document.title = currentPostTitle;
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
