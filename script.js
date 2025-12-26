@@ -32,6 +32,7 @@ let authorLink = "https://lynnswayze.com"; // Enter your website, social media, 
 
 let postsArray = [
 //
+[ "posts/2020-11-10-Post-Template.html" ],
 [ "posts/2025-12-08-Daily Habits and a Trick I Learned from Emile Coue.html" ] ];
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
