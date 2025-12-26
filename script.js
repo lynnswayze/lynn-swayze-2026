@@ -31,9 +31,7 @@ let authorLink = "https://lynnswayze.com"; // Enter your website, social media, 
   use a date it must still follow that format.*/
 
 let postsArray = [
-//[ "posts/2020-11-10-Special-Characters-Example.html", encodeURI( 'Spéci@l "Character\'s" Examp|e' ) ],
-//[ "posts/2020-11-10-My-Third-Post-Example.html" ],
-//[ "posts/2020-11-10-My-Second-Post-Example.html" ],
+//[ "posts\2025-12-08-Daily Habits and a Trick I Learned from Emile Coue.html" ],
 [ "posts/2020-11-10-Post-Template.html" ] ];
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
